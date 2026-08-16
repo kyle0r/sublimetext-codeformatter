@@ -5,7 +5,7 @@ import collections
 import re
 import sys
 import warnings
-from bs4.dammit import EntitySubstitution
+from .dammit import EntitySubstitution
 
 DEFAULT_OUTPUT_ENCODING = "utf-8"
 PY3K = (sys.version_info[0] > 2)
@@ -155,7 +155,7 @@ class PageElement(object):
 
     def format_string(self, s, formatter='minimal'):
         """Format the given string using the given formatter."""
-        if not isinstance(formatter, collections.Callable):
+        if not callable(formatter):
             formatter = self._formatter_for_name(formatter)
         if formatter is None:
             output = s
@@ -1077,7 +1077,7 @@ class Tag(PageElement):
 
         # First off, turn a string formatter into a function. This
         # will stop the lookup from happening over and over again.
-        if not isinstance(formatter, collections.Callable):
+        if not callable(formatter):
             formatter = self._formatter_for_name(formatter)
 
         attrs = []
@@ -1182,7 +1182,7 @@ class Tag(PageElement):
         """
         # First off, turn a string formatter into a function. This
         # will stop the lookup from happening over and over again.
-        if not isinstance(formatter, collections.Callable):
+        if not callable(formatter):
             formatter = self._formatter_for_name(formatter)
 
         pretty_print = (indent_level is not None)
@@ -1563,7 +1563,7 @@ class SoupStrainer(object):
     def _normalize_search_value(self, value):
         # Leave it alone if it's a Unicode string, a callable, a
         # regular expression, a boolean, or None.
-        if (isinstance(value, str) or isinstance(value, collections.Callable) or hasattr(value, 'match')
+        if (isinstance(value, str) or callable(value) or hasattr(value, 'match')
             or isinstance(value, bool) or value is None):
             return value
 

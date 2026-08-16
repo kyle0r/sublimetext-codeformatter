@@ -44,7 +44,7 @@ class Tokenizer:
     reserved_words = line_starters + ['do', 'in', 'of', 'else', 'get', 'set', 'new', 'catch', 'finally', 'typeof', 'yield', 'async', 'await', 'from', 'as']
 
     def __init__ (self, input_string, opts, indent_string):
-        import jsbeautifier.core.acorn as acorn
+        from ..core import acorn
         self.acorn = acorn
         self.input = InputScanner(input_string)
         self.opts = opts

@@ -7,9 +7,9 @@ import re
 import string
 import errno
 import copy
-from jsbeautifier.__version__ import __version__
-from jsbeautifier.javascript.options import BeautifierOptions
-from jsbeautifier.javascript.beautifier import Beautifier
+from .__version__ import __version__
+from .javascript.options import BeautifierOptions
+from .javascript.beautifier import Beautifier
 
 #
 # The MIT License (MIT)

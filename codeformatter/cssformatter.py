@@ -4,7 +4,7 @@
 # @license         The MIT License (MIT)
 
 import re
-import cssbeautifier
+from .lib import cssbeautifier
 
 
 class CssFormatter:

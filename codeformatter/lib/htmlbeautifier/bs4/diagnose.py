@@ -5,9 +5,10 @@ __license__ = "MIT"
 import cProfile
 from io import StringIO
 from html.parser import HTMLParser
-import bs4
-from bs4 import BeautifulSoup, __version__
-from bs4.builder import builder_registry
+from . import __version__
+from . import BeautifulSoup
+
+from .builder import builder_registry
 
 import os
 import pstats
@@ -204,8 +205,8 @@ def profile(num_elements=100000, parser="lxml"):
     filename = filehandle.name
 
     data = rdoc(num_elements)
-    vars = dict(bs4=bs4, data=data, parser=parser)
-    cProfile.runctx('bs4.BeautifulSoup(data, parser)' , vars, vars, filename)
+    vars = dict(BeautifulSoup=BeautifulSoup, data=data, parser=parser)
+    cProfile.runctx('BeautifulSoup(data, parser)' , vars, vars, filename)
 
     stats = pstats.Stats(filename)
     # stats.strip_dirs()

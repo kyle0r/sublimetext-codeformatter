@@ -5,7 +5,7 @@
 """Tests for P.A.C.K.E.R. unpacker."""
 
 import unittest
-from jsbeautifier.unpackers.packer import detect, unpack
+from ..packer import detect, unpack
 
 # pylint: disable=R0904
 class TestPacker(unittest.TestCase):

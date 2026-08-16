@@ -4,7 +4,7 @@
 # @license         The MIT License (MIT)
 
 import re
-import coldfusionbeautifier
+from .lib import coldfusionbeautifier
 
 
 class ColdfusionFormatter:

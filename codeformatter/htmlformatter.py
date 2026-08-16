@@ -3,21 +3,13 @@
 # @link            http://longman.me
 # @license         The MIT License (MIT)
 
-import os
-import sys
 import re
-import htmlbeautifier
+from .lib import htmlbeautifier
 import sublime
-
-directory = os.path.dirname(os.path.realpath(__file__))
-libs_path = os.path.join(directory, 'lib', 'htmlbeautifier')
-
-if libs_path not in sys.path:
-    sys.path.append(libs_path)
 
 use_bs4 = True
 try:
-    from bs4 import BeautifulSoup
+    from .lib.htmlbeautifier.bs4 import BeautifulSoup
 except:
     use_bs4 = False
 

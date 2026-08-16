@@ -4,7 +4,7 @@
 # @license         The MIT License (MIT)
 
 import re
-import jsbeautifier
+from .lib import jsbeautifier
 
 
 class JsFormatter:

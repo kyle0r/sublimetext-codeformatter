@@ -5,7 +5,7 @@
 """Tests for JavaScriptObfuscator unpacker."""
 
 import unittest
-from jsbeautifier.unpackers.javascriptobfuscator import (
+from ..javascriptobfuscator import (
     unpack, detect, smartsplit)
 
 # pylint: disable=R0904

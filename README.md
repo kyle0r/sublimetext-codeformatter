@@ -1,11 +1,12 @@
-[![Build Status](https://travis-ci.org/akalongman/sublimetext-codeformatter.svg?branch=master)](https://travis-ci.org/akalongman/sublimetext-codeformatter)
+<!--[![Build Status](https://travis-ci.org/akalongman/sublimetext-codeformatter.svg?branch=master)](https://travis-ci.org/akalongman/sublimetext-codeformatter)-->
 
-CodeFormatter
-=============
+💡 This is a fork of the [akalongman/sublimetext-codeformatter](https://github.com/akalongman/sublimetext-codeformatter) repo.
 
+---
 
-CodeFormatter is a Sublime Text 2/3 plugin that supports format (beautify) source code.
+# CodeFormatter
 
+CodeFormatter is a Sublime Text 2/3/4 plugin that formats (beautifies) source code.
 
 CodeFormatter has support for the following languages:
 
@@ -19,44 +20,85 @@ CodeFormatter has support for the following languages:
 * Coldfusion/Railo/Lucee
 
 
-Sponsors
------
-No sponsors yet.. :(
+## Installing
 
-If you like the software, don't forget to donate to further development of it!
-
-[![PayPal donate button](https://www.paypalobjects.com/webstatic/en_US/btn/btn_donate_pp_142x27.png)](https://www.paypal.com/cgi-bin/webscr?cmd=_xclick&business=akalongman@gmail.com&item_name=Donation%20to%20Sublime%20Text%20-%20CodeFormatter&item_number=1&no_shipping=1 "Donate to this project using Paypal")
-
-
-Installing
-----------
+<!--
 **With the Package Control plugin:** The easiest way to install CodeFormatter is through Package Control, which can be found at this site: http://wbond.net/sublime_packages/package_control
 
 Once you install Package Control, restart Sublime Text and bring up the Command Palette (`Command+Shift+P` on OS X, `Control+Shift+P` on Linux/Windows). Select "Package Control: Install Package", wait while Package Control fetches the latest package list, then select CodeFormatter when the list appears. The advantage of using this method is that Package Control will automatically keep CodeFormatter up to date with the latest version.
 
-**Without Git:** Download the latest source from [GitHub](https://github.com/akalongman/sublimetext-codeformatter) and copy the CodeFormatter folder to your Sublime Text "Packages" directory.
+**Without Git:** Download the latest source from [GitHub](https://github.com/akalongman/sublimetext-codeformatter) and copy the CodeFormatter folder to your Sublime Text "Packages" directory.-->
 
 **With Git:** Clone the repository in your Sublime Text "Packages" directory:
 
-    git clone https://github.com/akalongman/sublimetext-codeformatter.git CodeFormatter
+    git clone https://github.com/kyle0r/sublimetext-codeformatter.git CodeFormatter
 
 
-The "Packages" directory is located at:
+### Where are package files located?
 
-* OS X:
+You can determine these locations in a platform-independent way via the Sublime console:
 
-        ST2: ~/Library/Application Support/Sublime Text 2/Packages/
-        ST3: ~/Library/Application Support/Sublime Text 3/Packages/
+```
+import sublime; print("Packages dir:", sublime.packages_path()); print("Installed Packages dir:", sublime.installed_packages_path())
+```
 
-* Linux:
+Sublime loads packages from two package roots: the unpacked `Packages/` directory and the `Installed Packages/` directory which typically contains zip archives with the `.sublime-package` extension.
 
-        ST2: ~/.config/sublime-text-2/Packages/
-        ST3: ~/.config/sublime-text-3/Packages/
+💡 Files placed under `Packages/<PackageName>/` override resources with the same path inside `Installed Packages/<PackageName>.sublime-package`.
 
-* Windows:
+## The shared Python environment & Python compatibility
 
-        ST2: %APPDATA%/Sublime Text 2/Packages/
-        ST3: %APPDATA%/Sublime Text 3/Packages/
+As of 2026-Aug, CodeFormatter contains a number of bundled Python libraries, some of which
+date back to the original Sublime Text 2/3 implementation.
+
+This fork has namespaced the bundled formatter dependencies to avoid collisions
+with packages installed into Sublime Text's shared Python environment.  
+
+Recently, after installing the MarkdownLivePreview plugin, which installs the `BeautifulSoup` dependency into the shared Python environment,
+CodeFormatter stopped working, with the following error:
+
+```
+error: CodeFormatter
+Format error:
+prettify() got an unexpected keyword argument 'indent_size'
+```
+
+The root cause was an **import conflict** between the shared `BeautifulSoup` package and CodeFormatter's bundled custom fork.
+
+This fork was created primarily to solve this 👆 issue.
+
+### Current status as of 2026-Aug
+
+This fork's test suite currently passes under Python 3.9:
+
+    145 passed
+
+Sublime Text 4 is transitioning away from its legacy Python 3.3 plugin host.
+Build 4200 provides a Python 3.8 plugin host, while newer development builds
+have moved the modern plugin host to Python 3.14.
+
+**CodeFormatter** has not yet been fully audited for Python 3.14 compatibility.
+In particular, some of its older bundled dependencies use Python APIs that
+have since been deprecated or removed.
+
+### Future compatibility work
+
+Before explicitly opting **CodeFormatter** into Sublime Text's modern plugin
+host, the following must be considered:
+
+- Test the complete formatter suite under the modern Python versions supported by
+  Sublime Text's plugin hosts.
+- Audit warnings and deprecated APIs in bundled dependencies.
+- Replace removed APIs with compatibility code that continues to support
+  older Sublime Text plugin hosts where practical.
+- Exercise each formatter inside Sublime's actual plugin host in addition
+  to running the standalone test suite.
+- Add a `.python-version` only after modern-host compatibility has been
+  verified.
+
+This should help to preserve compatibility with existing installations while
+making the transition to newer Sublime Text Python runtimes explicit and
+testable.
 
 ## Configuration
 
@@ -84,7 +126,7 @@ You must install 5.6 or above (https://github.com/subins2000/phpF#requirements)
 On Linux/OSx after installation of package, you must set chmod +x to file fmt.phar in folder %PACKAGESDIR%/CodeFormatter/codeformatter/lib/phpbeautifier
 
 You can list all available transformations from Command Palette: CodeFormatter: Show PHP Transformations
-Examples of many transformations can be found here: [PHP Transformation Examples](https://github.com/akalongman/sublimetext-codeformatter/blob/master/PHP-Transformations.md)
+Examples of many transformations can be found here: [PHP Transformation Examples](https://github.com/kyle0r/sublimetext-codeformatter/blob/master/PHP-Transformations.md)
 
 Language specific options:
 ```js
@@ -103,7 +145,7 @@ Language specific options:
 
         // Enable specific transformations. Example: ["ConvertOpenTagWithEcho", "PrettyPrintDocBlocks"]
         // You can list all available transformations from command palette: CodeFormatter: Show PHP Transformations
-        // You can also see examples of many transformations at https://github.com/akalongman/sublimetext-codeformatter/blob/master/PHP-Transformations.md
+        // You can also see examples of many transformations at https://github.com/kyle0r/sublimetext-codeformatter/blob/master/PHP-Transformations.md
         "passes": [],
 
         // Disable specific transformations
@@ -327,8 +369,9 @@ Usage
 -----
 Tools -> Command Palette (`Cmd+Shift+P` or `Ctrl+Shift+P`) and type `Format Code`.
 
-You can set up your own key combo for this, by going to Preferences -> Key Bindings - User, and adding a command in that huge array: `{ "keys": ["ctrl+alt+f"], "command": "code_formatter" },`. Default keybinding is `ctrl+alt+f`. You can use any other key you want, thought most of them are already taken.
+You can set up your own key combo for this, by going to Preferences -> Key Bindings - User, and adding a command in that huge array: `{ "keys": ["ctrl+alt+f"], "command": "code_formatter" },`. Default keybinding is `ctrl+alt+f`. You can use any other key you want, though most of them are already taken.
 
+<!--
 ## TODO
 
 Add other languages support:
@@ -337,18 +380,280 @@ Add other languages support:
 * Ruby
 
 Add tests
+-->
 
 ## Troubleshooting
 
-If you like living on the edge, please report any bugs you find on the [CodeFormatter issues](https://github.com/akalongman/sublimetext-codeformatter/issues) page.
+<!--If you like living on the edge, please report any bugs you find on the [CodeFormatter issues](https://github.com/kyle0r/sublimetext-codeformatter/issues) page.-->
+TBD
 
 ## Contributing
 
-Pull requests are welcome.
-See [CONTRIBUTING.md](CONTRIBUTING.md) for information.
+<!--Pull requests are welcome.
+See [CONTRIBUTING.md](CONTRIBUTING.md) for information.-->
+TBD
 
 ## License
 
 Please see the [LICENSE](LICENSE.md) included in this repository for a full copy of the MIT license,
 which this project is licensed under.
 
+## Beautiful Soup fork provenance
+
+📆 In 2026-Aug I wanted to answer:
+
+> From which scm revision was **CodeFormatter's** `BeautifulSoup` forked?
+
+The outcome of the research follows.
+
+CodeFormatter's bundled HTML formatter is based on a custom fork of
+**Beautiful Soup 4.4.1** per the fork `PKG-INFO` [here](https://github.com/akalongman/python-beautifulsoup/blob/master/PKG-INFO).
+
+ℹ Prior to Git, the Beautiful Soup project used [Bazaar](https://en.wikipedia.org/wiki/GNU_Bazaar) for source control.
+
+The upstream source has been traced to the Beautiful Soup Bazaar
+development branch immediately before the 4.4.1 release:
+
+``` text
+Repository:  lp:beautifulsoup
+SCM:         Bazaar
+Revision:    396
+Revision ID: leonardr@segfault.org-20150929000141-8lwjfsxp2z2b4803
+Date:        2015-09-28 20:01:41 -0400
+```
+
+Revision 396 has the commit message:
+
+``` text
+Add a __license__ statement to all source files.
+```
+
+The published `beautifulsoup4-4.4.1.tar.gz` source distribution is
+derived from this revision. The source files match revision 396 byte-for-byte apart
+from the release version being changed from `4.4.0` to `4.4.1`. The
+source distribution additionally contains generated packaging metadata
+and excludes several repository-only files.
+
+#### Python 3 conversion used by CodeFormatter
+
+An important additional step exists between the fork repository and the copy
+bundled by CodeFormatter. Beautiful Soup 4.4.1 was developed from a canonical
+Python 2 source tree and included a `convert-py3k` helper which generated its
+Python 3 form by copying `bs4/` and running `2to3` over it:
+
+```sh
+cp -r bs4/ py3k/
+2to3 -w py3k
+```
+
+The provenance research establishes the ordering of these steps:
+
+1. `akalongman/python-beautifulsoup` commit `16d60f0` imports the official
+   Beautiful Soup 4.4.1 Python 2 source.
+2. All **36 files shared** between that commit and the official 4.4.1 source
+   distribution are **byte-for-byte identical**. The sdist additionally has
+   five generated `beautifulsoup4.egg-info` files, while the fork repository
+   has `.gitignore` and `LICENSE`.
+3. Commit `95e760c` applies Longman's small custom modifications, including
+   the `indent_size` behavior, to the **Python 2 source**.
+4. The modified source is subsequently converted with the upstream
+   `convert-py3k` / `2to3` workflow.
+5. A fresh `2to3` conversion of the `95e760c` Python 2 fork was compared
+   against CodeFormatter's vendored `bs4/` tree. After normalizing line
+   endings, **8 of the 9 production files are byte-for-byte identical**.
+6. The sole production source divergence is `element.py`. In four places,
+   CodeFormatter's vendored copy replaces the `2to3` output:
+
+   ```python
+   callable(formatter)
+   ```
+
+   with:
+
+   ```python
+   isinstance(formatter, collections.Callable)
+   ```
+
+   There are also insignificant comment/whitespace differences. The upstream
+   `bs4/tests/` directory was not vendored into CodeFormatter.
+
+This establishes that CodeFormatter *vendors* the Python 3-converted custom
+fork with a very small set of post-conversion edits. This distinction matters
+when comparing CodeFormatter's vendored `bs4/` tree with the 4.4.1 source
+distribution: a direct recursive diff will include the mechanical Python
+2-to-3 transformations, the fork-specific changes, and those later
+post-conversion edits.
+
+The resulting provenance is therefore:
+
+```text
+Beautiful Soup Bazaar repository
+    lp:beautifulsoup
+    revno 396
+    leonardr@segfault.org-20150929000141-8lwjfsxp2z2b4803
+        |
+        | release preparation
+        | version 4.4.0 -> 4.4.1
+        v
+beautifulsoup4-4.4.1.tar.gz
+        |
+        | byte-for-byte import of all 36 shared files
+        v
+akalongman/python-beautifulsoup @ 16d60f0
+    canonical Python 2 source
+        |
+        | custom modifications @ 95e760c
+        | including indent_size
+        v
+Modified Python 2 fork
+        |
+        | upstream convert-py3k / 2to3 workflow
+        v
+Python 3-converted custom fork
+        |
+        | small post-conversion edits in element.py
+        | callable(...) -> isinstance(..., collections.Callable)
+        v
+CodeFormatter custom Beautiful Soup fork
+```
+
+### Provenance methodology
+
+The provenance was established by comparing the historical upstream
+source, the official 4.4.1 source distribution, and the source bundled
+with CodeFormatter.
+
+1.  The bundled source was identified as a fork of Beautiful Soup 4.4.1
+    from its source layout, metadata, and the history of
+    `akalongman/python-beautifulsoup`.
+
+2.  The official release archive used for comparison was:
+
+    ``` text
+    beautifulsoup4-4.4.1.tar.gz
+    ```
+
+3.  The original Bazaar development branch was retrieved from Launchpad:
+
+    ``` sh
+    bzr branch lp:beautifulsoup
+    ```
+
+4.  The release period was located in the Bazaar history using revision
+    IDs and timestamps. The final upstream revision immediately
+    preceding the release was:
+
+    ``` text
+    revno 396
+    leonardr@segfault.org-20150929000141-8lwjfsxp2z2b4803
+    ```
+
+    The following mainline revision, 397, was not committed until
+    November 2015, placing revision 396 at the head of the branch when
+    4.4.1 was released.
+
+5.  Revision 396 was exported from Bazaar:
+
+    ``` sh
+    bzr export -r 396 ../bs4-r396
+    ```
+
+6.  The exported revision was compared recursively against the official
+    4.4.1 source distribution:
+
+    ``` sh
+    diff -rq beautifulsoup4-4.4.1 bs4-r396
+    ```
+
+    The differences were limited to release preparation and packaging:
+
+    ``` text
+    beautifulsoup4.egg-info/       release-generated metadata
+    PKG-INFO                       release-generated metadata
+    setup.cfg                      release packaging
+    prepare-release.sh             repository-only file
+    doc.zh/source/index.zh.html    repository-only file
+    setup.py                       version difference
+    bs4/__init__.py                version difference
+    ```
+
+7.  The two differing source files were inspected individually. In both
+    cases the substantive difference was only the release version:
+
+    ``` text
+    4.4.0 -> 4.4.1
+    ```
+
+8.  A clone of `akalongman/python-beautifulsoup` was checked out at
+    commit `16d60f0` and compared with the official 4.4.1 source
+    distribution. All 36 files common to both trees were byte-for-byte
+    identical. The only differences were five generated
+    `beautifulsoup4.egg-info` files present only in the sdist and `.gitignore`
+    plus `LICENSE` present only in the fork repository.
+
+9.  Commit `95e760c` was verified to apply the custom changes to the Python 2
+    source. The Python 3 form vendored by CodeFormatter therefore comes
+    *after* the custom modifications, via Beautiful Soup's own
+    `convert-py3k` / `2to3` workflow:
+
+    ``` sh
+    cp -r bs4/ py3k/
+    2to3 -w py3k
+    ```
+
+10. The `95e760c` source was freshly converted with that workflow and compared
+    against CodeFormatter's vendored `bs4/` tree. After normalizing line
+    endings, 8 of the 9 production files were byte-for-byte identical. The
+    only differing production file was `element.py`.
+
+11. The substantive post-conversion difference in `element.py` consists of
+    four substitutions of `callable(formatter)` with
+    `isinstance(formatter, collections.Callable)`, plus insignificant
+    comment/whitespace differences. CodeFormatter also omits the upstream
+    `bs4/tests/` directory.
+
+This establishes **Bazaar revision 396** as the upstream source revision from
+which Beautiful Soup 4.4.1 was prepared, and establishes the complete
+CodeFormatter lineage as: **4.4.1 Python 2 source -> fork-specific
+modifications -> `2to3` conversion -> small post-conversion edits ->
+CodeFormatter vendored Python 3 copy**.
+
+The `collections.Callable` substitutions were also noteworthy for future
+Python compatibility: they were not produced by `2to3`, and
+`collections.Callable` was later removed from modern Python. This fork has
+now resolved that divergence by selectively restoring the original
+`callable(...)` forms generated by `2to3`, while retaining the separate
+namespace-isolation changes required by CodeFormatter.
+
+### Hypothesis on updating CodeFormatter's `BeautifulSoup` to the upstream mainline
+
+Based on the provenance research above, and in relation to CodeFormatter's [custom fork of Beautiful Soup](https://github.com/akalongman/python-beautifulsoup)...
+
+Revision `16d60f0` imports the `BeautifulSoup` Python 2 source release [v4.4.1](https://www.crummy.com/software/BeautifulSoup/bs4/download/4.4/beautifulsoup4-4.4.1.tar.gz).
+All 36 files shared by the two trees are byte-for-byte identical. The only differences are packaging/repository extras.
+
+Revision `95e760c` applies the fork-specific modifications to the Python 2 source.
+
+💡 The fork-specific code delta is very small: only `+7 -4` lines of actual code. Maintaining a full vendored fork for such a small behavioral change created a disproportionate long-term maintenance burden.
+
+The actual custom Python 2 code diff is [here](https://github.com/akalongman/python-beautifulsoup/commit/95e760c75e517226f668901ca9c83401c131d94c#diff-9b9f42c49921229538b6bb7301174daa06310c2c8311a305206127053d89283c), and the actual patch [here](https://github.com/akalongman/python-beautifulsoup/commit/95e760c75e517226f668901ca9c83401c131d94c.patch).
+
+The later CodeFormatter vendoring step introduced only a tiny additional
+production-code delta after `2to3`: four `callable(formatter)` checks in
+`element.py` were changed to `isinstance(formatter, collections.Callable)`.
+Those changes are separate from the original custom indentation patch and
+became a source of incompatibility with newer Python versions.
+
+This fork has resolved that historical post-conversion divergence by
+selectively restoring the `callable(formatter)` forms produced by `2to3`.
+The namespace-isolation import change in `element.py` is intentionally
+retained, since it prevents the vendored Beautiful Soup fork from colliding
+with a shared `bs4` installation.
+
+Therefore, it may be practical to carry the small CodeFormatter-specific behavior as a patch against a newer Beautiful Soup release. This still needs validation because the relevant Beautiful Soup APIs and internals have evolved substantially since 4.4.1.
+
+What is the motivation to turn the custom BeautifulSoup fork into a mainline patch?
+
+1. Replace the decade-old Beautiful Soup 4.4.1-derived vendored code with a maintained release.
+1. Reduce exposure to removed/deprecated Python APIs as Sublime Text moves to newer plugin-host Python versions.
+1. Retain CodeFormatter's custom indentation behavior as a small, explicit patch rather than maintaining an opaque historical fork.

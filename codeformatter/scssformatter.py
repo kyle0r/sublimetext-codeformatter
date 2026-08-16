@@ -3,7 +3,7 @@
 # This is a modified version of cssformatter.py
 
 import re
-import scssbeautifier
+from .lib import scssbeautifier
 
 
 class ScssFormatter:

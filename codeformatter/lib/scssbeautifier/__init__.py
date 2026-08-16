@@ -27,9 +27,9 @@ from __future__ import print_function
 import sys
 import re
 import copy
-from jsbeautifier.__version__ import __version__
-from cssbeautifier.css.options import BeautifierOptions
-from cssbeautifier.css.beautifier import Beautifier
+from ..jsbeautifier.__version__ import __version__
+from .css.options import BeautifierOptions
+from .css.beautifier import Beautifier
 
 
 def default_options():

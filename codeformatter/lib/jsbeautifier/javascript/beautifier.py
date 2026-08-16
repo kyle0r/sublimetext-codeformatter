@@ -109,7 +109,7 @@ def remove_redundant_indentation(output, frame):
 class Beautifier:
 
     def __init__(self, opts = default_options() ):
-        import jsbeautifier.core.acorn as acorn
+        from ..core import acorn
         self.acorn = acorn
         self.opts = copy.copy(opts)
         self.blank_state()
@@ -259,7 +259,7 @@ class Beautifier:
 
 
     def unpack(self, source, evalcode=False):
-        import jsbeautifier.unpackers as unpackers
+        from .. import unpackers
         try:
             return unpackers.run(source, evalcode)
         except unpackers.UnpackingError as error:

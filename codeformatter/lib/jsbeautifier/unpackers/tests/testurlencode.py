@@ -6,7 +6,7 @@
 
 import unittest
 
-from jsbeautifier.unpackers.urlencode import detect, unpack
+from ..urlencode import detect, unpack
 
 # pylint: disable=R0904
 class TestUrlencode(unittest.TestCase):

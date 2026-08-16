@@ -4,7 +4,7 @@
 # @license         The MIT License (MIT)
 
 import re
-import vbscriptbeautifier
+from .lib import vbscriptbeautifier
 
 
 class VbscriptFormatter:

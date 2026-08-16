@@ -3,9 +3,9 @@ import sys
 import re
 import copy
 from .options import BeautifierOptions
-from jsbeautifier.core.options import mergeOpts
-from jsbeautifier.core.output import Output
-from jsbeautifier.__version__ import __version__
+from ...jsbeautifier.core.options import mergeOpts
+from ...jsbeautifier.core.output import Output
+from ...jsbeautifier.__version__ import __version__
 
 #
 # The MIT License (MIT)
@@ -102,7 +102,7 @@ class Printer:
 class Beautifier:
 
     def __init__(self, source_text, opts=default_options()):
-        import jsbeautifier.core.acorn as acorn
+        from ...jsbeautifier.core import acorn
         self.lineBreak = acorn.lineBreak
         self.allLineBreaks = acorn.allLineBreaks
 

@@ -6,8 +6,8 @@
 
 import unittest
 import os
-from jsbeautifier.unpackers.myobfuscate import detect, unpack
-from jsbeautifier.unpackers.tests import __path__ as path
+from ..myobfuscate import detect, unpack
+from . import __path__ as path
 
 INPUT = os.path.join(path[0], 'test-myobfuscate-input.js')
 OUTPUT = os.path.join(path[0], 'test-myobfuscate-output.js')
